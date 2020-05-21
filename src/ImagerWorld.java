@@ -20,16 +20,10 @@ import java.io.*;
 
 public class ImagerWorld extends RelatrixWorld {
 	private static final long serialVersionUID = -5733588241174688736L;
-	private static FitnessFunction fitnessFunction = null;
 
-  public ImagerWorld(String[] args) throws IOException {
-	super(args);
-  }
-
-	@Override
-	public float computeRawFitness(Chromosome individual) {
-		return (float) fitnessFunction.execute(individual);
-	}
+	public ImagerWorld(String[] args) throws IOException, IllegalAccessException {
+		super(args);
+	} 
   /*
   public void create(int individuals) {
     Class[] types = { MatrixNxN.matrixClass, MatrixNxN.matrixClass, MatrixNxN.matrixClass, MatrixNxN.matrixClass };
@@ -193,11 +187,11 @@ public class ImagerWorld extends RelatrixWorld {
 		int sum = 0;
 		//MatrixNxN result1, result2;
 	    Object[][] argVals = new Object[1][3];
-   		argVals[0][0] = ((Imager1)fitnessFunction).image1;
+   		argVals[0][0] = ((Imager1)getFitnessFunction()).image1;
    		argVals[0][1] = Variable.get("M0");
 		argVals[0][2] = new Strings();
 		Object result1 = ind.execute_object(argVals[0]);
- 		argVals[0][0] = ((Imager1)fitnessFunction).image2; 		
+ 		argVals[0][0] = ((Imager1)getFitnessFunction()).image2; 		
  		argVals[0][1] = Variable.get("M1");
 		argVals[0][2] = new Strings();
 		Object result2 = ind.execute_object(argVals[0]);
@@ -220,7 +214,7 @@ public class ImagerWorld extends RelatrixWorld {
 	}
 
 
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) {
 	     try {
 	            Class type = MatrixNxN.matrixClass;
 	            Class[] argTypes = {MatrixNxN.matrixClass, Matrix3x3.matrixClass, Strings.stringClass};     	
@@ -230,7 +224,6 @@ public class ImagerWorld extends RelatrixWorld {
 	            w.genome.setArgType(argTypes);
 	            w.genome.setChromoType(type);
 	            w.genome.setNodeType(nodeType);
-	            fitnessFunction = new Imager1(w, argTypes, type);
 	            if(args.length > 0) {
 	    			if(args.length == 1 && args[0].equals("compute") || args.length == 4 && args[3].equals("compute") ) {
 	    				w.compute(20000, 5000, 7, 128, 2048);
